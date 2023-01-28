@@ -9063,7 +9063,7 @@ function Game(data) {
     }, 2);
 }
 
-Game.TICK_RATE = 28;
+Game.TICK_RATE = 33;
 Game.FDLC_TARGET = 0x3;
 Game.FDLC_MAX = Game.FDLC_TARGET + 0x2;
 
