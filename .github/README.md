@@ -1,5 +1,2 @@
-# Mario Royale
-This repository is only for the development of the Mario Royale client source code.
-I'm not the writer of Mario Royale, the initial version 2.1.0A was a backup from InfernoPlus' website that I deobfuscated.
-
-Want to help us? Just create a Pull Request!
+# Mario Royale Legacy
+This is the client for Mario Royale Legacy, an older version of Mario Royale developed from 2019 to 2022. With the release of [Mario Royale Deluxe](https://github.com/mroyale/MarioRoyaleDeluxe), an updated fork of the [original Mario Royale](https://github.com/infernoplus/InfringeRoyale), Legacy is no longer in active development and no new content or gameplay changes should be expected.
