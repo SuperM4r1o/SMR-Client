@@ -5,6 +5,7 @@ let LOBBY_MUSIC_URL = ASSETS_URL + "audio/music/lobby.mp3";
 let MENU_MUSIC_URL = ASSETS_URL + "audio/music/menu.mp3";
 
 let SKIN_MUSIC_URL = {};
+let SKIN_SFX_URL = {};
 
 let TILE_ANIMATION = {};
 let OBJ_ANIMATION = {};
@@ -13,15 +14,20 @@ let BLOCK_DATA = {};
 let SKINCOUNT = 2;
 let assetData = resources[`${ASSETS_URL}assets/assets.json`];
 
-let WEBSOCKET_SERVER = 'ws://' + atob("NzQuMjA3LjIzNS4yNTM=") + ':9000/royale/ws';
+let WEBSOCKET_SERVER = `${ window.location.protocol == "https:" ? "wss" : "ws" }://` + window.location.host + `/legacy/ws`;
 let DISCLAIMER_SCREEN_TIMEOUT = 5000;
 
-(function () {
-    for (i in assetData.properties) {
+(function() {
+    for(i in assetData.properties) {
         var prop = assetData.properties;
         var music = prop[i].music;
-        if (music != undefined)
+        var sfx = prop[i].sfx;
+        if (music != undefined) {
             SKIN_MUSIC_URL[prop[i].id] = music;
+        }
+        if (sfx != undefined) {
+            SKIN_SFX_URL[prop[i].id] = sfx;
+        }
     }
     if (assetData.tileAnim) {
         for (var anim of assetData.tileAnim) {

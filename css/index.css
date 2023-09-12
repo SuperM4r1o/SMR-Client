@@ -77,7 +77,7 @@ body {
 .background-a {
   image-rendering: pixelated;
   image-rendering: crisp-edges;
-  background-color: #14161d;
+  background-color: #6B8CFF;
   background-image: url(https://raw.githubusercontent.com/mroyale/assets/legacy/img/home/bkga.png);
   background-repeat: repeat-x;
   background-position: center center;
@@ -431,13 +431,15 @@ hr {
 }
 
 .leaderboard-skin {
+  margin: 0px;
+  border: 0;
+  transform: scale(1);
+  padding-right: 4px;
+  background: url(https://raw.githubusercontent.com/mroyale/assets/legacy/img/skins/smb_skin0.png) -208px 0;
+  width: 12px;
+  height: 16px;
   text-align: left;
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin: 12px;
-  background: url(https://raw.githubusercontent.com/mroyale/assets/legacy/img/skins/smb_skin0.png) -208px 0;
-  transform: scale(2)
 }
 
 .skin-select-button {

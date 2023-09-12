@@ -1270,7 +1270,7 @@ function _0x3f2a38() {
         app.save();
     };
     this.btnAbout.onclick = function() {
-        alert("Mario Royale Editor v4.4.3\n\nCreated by: InfernoPlus\nUpdated by Cyuubi, Eliza, gyorokpeter, terminalarch and Nightcat\n\nLast updated: 2022-07-12 (YYYY-MM-DD)");
+        alert("Mario Royale Editor v4.4.3\n\nCreated by: InfernoPlus\nUpdated by Cyuubi, gyorokpeter, terminalarch, Peppino Griffin and Nightcat\n\nLast updated: 2022-07-12 (YYYY-MM-DD)");
         /* window.open("https://www.youtube.com/watch?v=oHg5SJYRHA0", "_blank"); */ /* Commented in memorial */
     };
 }
@@ -6871,6 +6871,7 @@ Editor.prototype.compile = function() {
     outData.shortname = this.world.shortname;
     outData.musicOverridePath = this.world.musicOverridePath;
     outData.soundOverridePath = this.world.soundOverridePath;
+    if(this.dataRaw.hideCoins) { outData.hideCoins = this.dataRaw.hideCoins; }
     outData.assets = this.world.assets;
     outData.podiumLoop = this.world.podiumLoop;
     outData.resource = this.dataRaw.resource;

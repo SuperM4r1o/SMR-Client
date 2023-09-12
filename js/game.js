@@ -1721,22 +1721,22 @@ Menu.prototype.partHide = function () {
     this.linkElement = document.getElementById("link");
     this.linkElement.style.display = "";
 }
-Menu.prototype.background = function (_0x36dd53) {
-    if (_0x36dd53 !== this.bid) {
-        switch (_0x36dd53) {
+Menu.prototype.background = function (bg) {
+    if (bg !== this.bid) {
+        switch (bg) {
             case 'b':
-                _0x36dd53 = "background-b";
+                bg = "background-b";
                 break;
             case 'c':
-                _0x36dd53 = "background-c";
+                bg = "background-c";
                 break;
             default:
-                _0x36dd53 = "background-a";
+                bg = "background-a";
         }
         this.body.classList.remove("background-a");
         this.body.classList.remove("background-b");
         this.body.classList.remove("background-c");
-        this.body.classList.add(_0x36dd53);
+        this.body.classList.add(bg);
     }
 };
 Menu.prototype.navigation = function (lastNav, title) {
@@ -1993,7 +1993,7 @@ function MainAsMemberScreen() {
     this.charMusicToggle.onclick = function () {
         app.charMusic = !app.charMusic;
         that.updMusicbtn();
-        Cookies.set("char_music", app.charMusic ? "1" : "0", {
+        Cookies.set("char_music", app.charMusic ? "0" : "1", {
             'expires': 0x1e
         });
     }
@@ -2220,7 +2220,7 @@ function NameScreen() {
     this.charMusicToggle.onclick = function () {
         app.charMusic = !app.charMusic;
         that.updMusicbtn();
-        Cookies.set("char_music", app.charMusic ? "1" : "0", {
+        Cookies.set("char_music", app.charMusic ? "0" : "1", {
             'expires': 0x1e
         });
     }
@@ -3523,7 +3523,7 @@ GameObject.OBJECT = function (classId) {
 "use strict";
 
 function PlayerObject(game, level, zone, pos, pid, skin, isDev, isJunior, isMod) {
-    GameObject.call(this, game, level, zone, pos);
+    GameObject.call(this, game, level, zone, vec2.add(pos, vec2.make(0.15, 0)));
     this.pid = pid;
     this.skin = skin;
     game.display.ensureSkin(skin);
@@ -3935,7 +3935,7 @@ PlayerObject.SPRITE_LIST = [{
     'ID': 0x70,
     'INDEX': 0xe
 }];
-for (var _0x1bec55 = 0x0; _0x1bec55 < PlayerObject.SPRITE_LIST.length; _0x1bec55++) PlayerObject.SPRITE[PlayerObject.SPRITE_LIST[_0x1bec55].NAME] = PlayerObject.SPRITE_LIST[_0x1bec55], PlayerObject.SPRITE[PlayerObject.SPRITE_LIST[_0x1bec55].ID] = PlayerObject.SPRITE_LIST[_0x1bec55];
+for (var i=0; i<PlayerObject.SPRITE_LIST.length; i++) PlayerObject.SPRITE[PlayerObject.SPRITE_LIST[i].NAME] = PlayerObject.SPRITE_LIST[i], PlayerObject.SPRITE[PlayerObject.SPRITE_LIST[i].ID] = PlayerObject.SPRITE_LIST[i];
 PlayerObject.SNAME = {};
 PlayerObject.SNAME.STAND = "STAND";
 PlayerObject.SNAME.TAUNT = "TAUNT";
@@ -4287,6 +4287,9 @@ PlayerObject.prototype.input = function (abtnD, abtnA, abtnB, abtnTA, abtnU) {
     if (app.autoMove && this.btnD[0] == 0) this.btnD[0] = 1;
     this.btnA = abtnA;
     this.btnB = abtnB;
+    if(abtnU && !this.btnU && this.moveSpeed == 0 && this.grounded && !this.isState(PlayerObject.SNAME.DOWN)) {
+        this.play((this.pid === this.game.pid && app.charMusic && this.skin in SKIN_SFX_URL ? SKIN_SFX_URL[this.skin] : "") + "taunt.mp3", 0x1, 0.04);
+    }
     this.btnU = abtnU;
     if (abtnTA) {
         this.btnA = true;
@@ -4353,7 +4356,7 @@ PlayerObject.prototype.control = function () {
         if (this.btnA) {
             if ((this.grounded || this.underWater) && !this.btnAHot) {
                 this.jumping = 0x0;
-                this.play(this.underWater ? "swim.mp3" : 0x0 < this.power ? "jump1.mp3" : "jump0.mp3", 0.7, 0.04);
+                this.play(this.underWater ? "swim.mp3" : 0x0 < this.power ? (this.pid === this.game.pid && app.charMusic && this.skin in SKIN_SFX_URL ? SKIN_SFX_URL[this.skin] : "") + "jump1.mp3" : (this.pid === this.game.pid && app.charMusic && this.skin in SKIN_SFX_URL ? SKIN_SFX_URL[this.skin] : "") + "jump0.mp3", 0.7, 0.04);
                 this.btnAHot = true;
             }
             if (this.jumping > a) this.jumping = -0x1;
@@ -4577,7 +4580,7 @@ PlayerObject.prototype.attack = function () {
     this.attackCharge -= PlayerObject.ATTACK_CHARGE;
     var dir = this.reverse ? vec2.add(this.pos, PlayerObject.PROJ_OFFSET) : vec2.add(this.pos, vec2.multiply(PlayerObject.PROJ_OFFSET, vec2.make(-0x1, 0x1)));
     this.game.createObject(FireballObject.ID, this.level, this.zone, dir, [undefined, this.reverse, this.pid, this.skin]);
-    this.play("fireball.mp3", 0x1, 0.04);
+    this.play((this.pid === this.game.pid && app.charMusic && this.skin in SKIN_SFX_URL ? SKIN_SFX_URL[this.skin] : "") + "fireball.mp3", 0x1, 0.04);
 };
 PlayerObject.prototype.bounce = function () {
     this.jumping = 0x0;
@@ -4654,7 +4657,7 @@ PlayerObject.prototype.star = function () {
 
     this.starMusic && (this.starMusic.stop(), this.starMusic = undefined);
     this.starTimer = PlayerObject.STAR_LENGTH;
-    (this.starMusic = this.play("star.mp3", 0x1, 0.04)) && this.starMusic.loop(true);
+    (this.starMusic = this.play((app.charMusic && this.skin in SKIN_SFX_URL ? SKIN_SFX_URL[this.skin] : "") + "star.mp3", 0x1, 0.04)) && this.starMusic.loop(true);
 };
 PlayerObject.prototype.tfm = function (_0x538c99) {
     if (this.spectator) return;
@@ -6522,7 +6525,7 @@ BillBlasterObject.prototype.play = GameObject.prototype.play;
 GameObject.REGISTER_OBJECT(BillBlasterObject);
 
 function BulletBillObject(game, level, zone, pos, oid, direction, speed) {
-    GameObject.call(this, game, level, zone, pos);
+    GameObject.call(this, game, level, zone, vec2.add(pos, vec2.make(0.2, 0.2)));
     this.oid = oid;
     this.setState(BulletBillObject.STATE.IDLE);
     this.bonkTimer = this.anim = 0x0;
@@ -7979,7 +7982,7 @@ function AudioData(context, path, prefixes) {
 AudioData.prototype.startLoad = function () {
     var sound = this,
         ajax = new XMLHttpRequest();
-    ajax.open("GET", ASSETS_URL + "audio/" + this.prefixes[0] + "/" + this.path + "?v=" + VERSION, true);
+    ajax.open("GET", isLink(this.path) ? this.path : ASSETS_URL + "audio/" + this.prefixes[0] + "/" + this.path + "?v=" + VERSION, true);
     ajax.responseType = "arraybuffer";
     ajax.onload = function () {
         sound.onload(ajax, sound.context);
@@ -8032,7 +8035,7 @@ SoundFile.prototype.create = function (gainValue, playbackRateDeviation, destina
     this.source.onended = function () {
         that.playing = false;
     };
-    this.source.playbackRate.value = 0x1 + (playbackRateDeviation * Math.random() - 0.5 * playbackRateDeviation);
+    this.source.playbackRate.value = 0x1 //+ (playbackRateDeviation * Math.random() - 0.5 * playbackRateDeviation);
     this.gain = this.context.createGain();
     this.gain.gain.value = gainValue;
     this.source.connect(this.gain);
@@ -8066,7 +8069,7 @@ SpatialSoundFile.prototype.create = function (_0x515fcc, _0x3aa7bf, _0x2989cc) {
     this.source.onended = function () {
         _0x543ac8.playing = false;
     };
-    this.source.playbackRate.value = 0x1 + (_0x3aa7bf * Math.random() - 0.5 * _0x3aa7bf);
+    this.source.playbackRate.value = 0x1// + (_0x3aa7bf * Math.random() - 0.5 * _0x3aa7bf);
     this.gain = this.context.createGain();
     this.gain.gain.value = _0x515fcc;
     this.panner = this.context.createPanner();
@@ -8135,11 +8138,20 @@ Audio.prototype.initWebAudio = function (app) {
     }
     var soundList = ["alert.mp3", "break.mp3", "breath.mp3", "bump.mp3", "gold.mp3", "spring.mp3",
         "coin.mp3", "fireball.mp3", "firework.mp3", "flagpole.mp3", "item.mp3", "jump0.mp3",
-        "jump1.mp3", "kick.mp3", "life.mp3", "pipe.mp3", "powerup.mp3", "powerdown.mp3", "stomp.mp3", "swim.mp3", "vine.mp3"];
+        "jump1.mp3", "kick.mp3", "life.mp3", "pipe.mp3", "powerup.mp3", "powerdown.mp3", "stomp.mp3", "swim.mp3", "vine.mp3", "taunt.mp3"];
     var musicList = [
         "main0.mp3", "main1.mp3", "main2.mp3", "main3.mp3", "level.mp3", // STANDARD
         "castle.mp3", "victory.mp3", "star.mp3", "dead.mp3", "gameover.mp3", "hurry.mp3"
     ];
+    if(app.charMusic && app.net.skin in SKIN_SFX_URL) {
+        var url = SKIN_SFX_URL[app.net.skin];
+        musicList.push(url + "dead.mp3");
+        musicList.push(url + "star.mp3");
+        soundList.push(url + "fireball.mp3");
+        soundList.push(url + "jump0.mp3");
+        soundList.push(url + "jump1.mp3");
+        soundList.push(url + "taunt.mp3");
+    }
     this.sounds = [];
     for (var i = 0x0; i < soundList.length; i++)
         if (!this.createAudio(soundList[i], this.soundPrefix)) return false;
@@ -8667,16 +8679,20 @@ Display.prototype.drawUI = function () {
         context.font = "24px SmbWeb";
         context.textAlign = "left";
         context.fillText(playerInfo ? playerInfo.displayName : DEFAULT_PLAYER_NAME, 0x8, 0x20);
-        sprite = util.sprite.getSprite(objTexture, coinIconIndex);
-        txt = (app.compactMode ? '' : 'x') + (0x9 >= this.game.coins ? '0' + this.game.coins : this.game.coins);
-        context.drawImage(objTexture, sprite[0x0], sprite[0x1], Display.TEXRES, Display.TEXRES, 0x4, 0x28, 0x18, 0x18);
-        context.fillText(txt, 0x1e, 0x40);
+
+        if(!this.game.hideCoinCounter) {
+            sprite = util.sprite.getSprite(objTexture, coinIconIndex);
+            txt = (app.compactMode ? '' : 'x') + (0x9 >= this.game.coins ? '0' + this.game.coins : this.game.coins);
+            context.drawImage(objTexture, sprite[0x0], sprite[0x1], Display.TEXRES, Display.TEXRES, 0x4, 0x28, 0x18, 0x18);
+            context.fillText(txt, 0x1e, 0x40);
+        }
+
         sprite = util.sprite.getSprite(skinTexture, 0xd);
         txtWIDTH = context.measureText(txt).width + 0x1e;
-        context.drawImage(skinTexture, sprite[0x0], sprite[0x1], Display.TEXRES, Display.TEXRES, 0x4 + txtWIDTH + 0x10, 0x28, 0x18, 0x18);
-
-        context.fillText((app.compactMode ? '' : 'x') + (0x9 >= this.game.lives ? '0' + this.game.lives : this.game.lives), 0x4 + txtWIDTH + 0x10 + 0x1a, 0x40);
-        if (this.game instanceof Game) {
+        context.drawImage(skinTexture, sprite[0x0], sprite[0x1], Display.TEXRES, Display.TEXRES, this.game.hideCoinCounter ? 0x4 : (0x4 + txtWIDTH + 0x10), 0x28, 0x18, 0x18);
+        context.fillText((app.compactMode ? '' : 'x') + (0x9 >= this.game.lives ? '0' + this.game.lives : this.game.lives), this.game.hideCoinCounter ? 0x1e : 0x4 + txtWIDTH + 0x10 + 0x1a, 0x40);
+        
+        if(this.game instanceof Game) {
             //timer
             txt = this.game.getGameTimer((app.compactMode ? app.compactMode : this.game.touchMode));
             txtWIDTH = context.measureText(txt).width;
@@ -9169,17 +9185,21 @@ Game.prototype.load = function (data) {
             }
         });
     }
-    if (data.podiumLoop) {
-        if (data.podiumLoop == false) return;
-        else loopPodium = true;
+    if(data.podiumLoop) {
+      if(data.podiumLoop == false) return;
+      else loopPodium = true;
     }
-    if (data.minZoom) {
-        try { this.world.minZoom = data.minZoom; }
-        catch { this.world.minZoom = 0x8; app.menu.warn.show("Cannot set min zoom, fallback initialized"); }
+    if(data.minZoom) {
+      try { this.world.minZoom = data.minZoom; }
+      catch { this.world.minZoom = 0x8; app.menu.warn.show("Cannot set min zoom, fallback initialized"); }
     }
-    if (data.maxZoom) {
-        try { this.world.maxZoom = data.maxZoom; }
-        catch { this.world.maxZoom = 0x1; app.menu.warn.show("Cannot set max zoom, fallback initialized"); }
+    if(data.maxZoom) {
+      try { this.world.maxZoom = data.maxZoom; }
+      catch { this.world.maxZoom = 0x1; app.menu.warn.show("Cannot set max zoom, fallback initialized"); }
+    }
+
+    if(data.hideCoins) {
+      this.hideCoinCounter = true;
     }
 
     this.lifeage(true);
@@ -9837,8 +9857,9 @@ Game.prototype.doMusic = function () {
         zone = this.getZone();
     if (this.gameOver) {
         app.audio.setMusic("gameover.mp3", false);
-    } else if (player && player.dead)
-        app.audio.setMusic("dead.mp3", false);
+    } else if (player && player.dead) {
+        app.audio.setMusic((app.charMusic && app.net.skin in SKIN_SFX_URL ? SKIN_SFX_URL[app.net.skin] : "") + "dead.mp3", false);
+    }
     else if (player && player.autoTarget && 0x0 >= this.victory)
         app.audio.setMusic(zone.winmusic || "level.mp3", false);
     else if (0x0 < this.victory && !this.victoryMusic) {
@@ -10173,7 +10194,6 @@ function App() {
     this.audioElement.load;
     this.audioElement.volume = 0.2;
     this.audioElement.loop = true;
-    this.audioElement = undefined;
 
     this.hurryingUp = false;
     this.hurryUpStart = null;
@@ -10192,10 +10212,10 @@ function App() {
     this.settings.showSettings = false;
     this.audio = new Audio(this);
     this.players = [];
-    //if (0x1 !== parseInt(Cookies.get("music")))
-        //this.audioElement.play();
+    if (0x1 !== parseInt(Cookies.get("music")))
+        this.audioElement.play();
     this.statusUpdater = null;
-    this.charMusic = Cookies.get("char_music") === "1";
+    this.charMusic = Cookies.get("char_music") === "0";
 }
 App.prototype.mobileCheck = function () {
     let check = false;

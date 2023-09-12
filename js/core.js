@@ -221,7 +221,26 @@ function refreshLeaderBoard() {
                         tr.appendChild(td);
                         td = document.createElement("td");
                         p.nickname = p.nickname.substring(0, 20);
-                        td.innerText = ""+p.nickname;
+
+                        function sanitize(string) {
+                            const map = {
+                                '&': '&amp;',
+                                '<': '&lt;',
+                                '>': '&gt;',
+                                '"': '&quot;',
+                                "'": '&#x27;',
+                                "/": '&#x2F;',
+                            };
+                            const reg = /[&<>"'/]/ig;
+                            return string.replace(reg, (match)=>(map[match]));
+                        }
+
+                        var skin = document.createElement("div");
+                        skin.setAttribute("class", "leaderboard-skin");
+                        skin.style["background-image"] = `url(https://raw.githubusercontent.com/mroyale/assets/legacy/img/skins/smb_skin${p.skin}.png)`;
+                        td.appendChild(skin);
+                        td.innerHTML += sanitize(p.nickname);
+                        
                         td.style["padding-left"] = "10px";
                         td.style["padding-right"] = "10px";
                         switch(p.pos) {
